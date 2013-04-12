@@ -3,8 +3,6 @@
 
 #include <mysql/mysql.h>
 
-/* compilation flags: -L/usr/lib/mysql -lmysqlclient */
-
 
 	/*	USAGE:
 		the Data_Transmission class is used for connecting to a database and to make queries,
@@ -12,10 +10,9 @@
 		The prepareData-method expects data which it structures into SQL-script using the private method SQLformat.
 		Once there is a connection and a SQL-scrips has been properly formatted the sendQuery-method can be used to
 		send the query to the database.
+		
+		compilation flags: -L/usr/lib/mysql -lmysqlclient
 	*/
-
-
-
 
 class Data_Transmission {
 private:
