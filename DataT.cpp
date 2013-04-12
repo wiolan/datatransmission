@@ -45,18 +45,17 @@ std::string Data_Transmission::SQLformat(std::string data) {
 	std::string query;
 	//TODO: restructure data into SQL syntax
 
+	query = "SELECT * FROM player;"; //test string, will be changed once we know how data is structured
 	this->hasSQLscript = true;
 	
 	return query;
 }
 
 void Data_Transmission::prepareData(std::string data) {
-	//TODO: retrieve the data (and maybe restructure it) and stor in dataToSend
+	//TODO: retrieve the data (and maybe restructure it), then send it to SQLformat()
 
 	if(data.size() > 0) {
-		//testing
-		this->SQLquery = "SELECT * FROM player;";
-		//this->SQLformat(this->dataToSend);
+		this->SQLquery = this->SQLformat(this->dataToSend);
 	}
 	
 }
@@ -67,8 +66,7 @@ int Data_Transmission::sendQuery() {
 		if(mysql_query(this->connection, this->SQLquery.c_str())) {
 			std::cout << "ERROR: " << mysql_error(this->connection) << std::endl;
 		} else {
-			
-			res = mysql_store_result(connection);
+			res = mysql_store_result(this->connection);
 		}
 
 	} else {
@@ -78,17 +76,19 @@ int Data_Transmission::sendQuery() {
 
 void Data_Transmission::close() {
 	std::cout << "closing" << std::endl;
+	
 	if(this->res != NULL) mysql_free_result(this->res);
 	mysql_close(this->connection);
+	
 	std::cout << "closed" << std::endl;
 }
 
 void Data_Transmission::writeData() {
-	int num_columns = mysql_num_fields(res);
-	int num_rows = mysql_num_rows(res);
+	int num_columns = mysql_num_fields(this->res);
+	int num_rows = mysql_num_rows(this->res);
 	for(int i=0;i<num_rows;i++)
 	{
-		this->row = mysql_fetch_row(res);
+		this->row = mysql_fetch_row(this->res);
 		for(int j=0;j<num_columns;j++)
 		{
 			std::cout << this->row[j] << std::endl;
