@@ -9,6 +9,7 @@ Data_Transmission::Data_Transmission(std::string hostIP, std::string user, std::
 	this->database = database;
 
 	this->hasConnection = false;
+	this->hasSQLscript = false;
 	this->dataToSend = "";
 	this->SQLquery = "";
 
@@ -43,6 +44,8 @@ void Data_Transmission::connectToDB() {
 std::string Data_Transmission::SQLformat(std::string data) {
 	std::string query;
 	//TODO: restructure data into SQL syntax
+
+	this->hasSQLscript = true;
 	
 	return query;
 }
@@ -59,7 +62,7 @@ void Data_Transmission::prepareData(std::string data) {
 }
 
 int Data_Transmission::sendQuery() {
-	if(this->hasConnection && this->SQLquery.size() > 0) { // we have a connection and there is data to send
+	if(this->hasConnection && this->hasSQLscript) { // we have a connection and there is data to send
 
 		if(mysql_query(this->connection, this->SQLquery.c_str())) {
 			std::cout << "ERROR: " << mysql_error(this->connection) << std::endl;
@@ -69,7 +72,7 @@ int Data_Transmission::sendQuery() {
 		}
 
 	} else {
-		std::cout << "ERROR: no connection to database, use connectToDB()" << std::endl;
+		std::cout << "ERROR: no connection or no SQL-script" << std::endl;
 	}
 }
 
