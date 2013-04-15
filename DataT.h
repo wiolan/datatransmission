@@ -14,6 +14,13 @@
 		compilation flags: -L/usr/lib/mysql -lmysqlclient
 	*/
 
+	/*	notes:
+		SQLformat() and prepareData() might change depending on how
+		data storage is handled by the Data Collection module
+
+		right now SQLformat() just contains test logic
+	*/
+
 class Data_Transmission {
 private:
 
@@ -31,7 +38,8 @@ private:
 	std::string dataToSend;
 	std::string SQLquery;
 
-	//formats the data into SQL-script (input might be something other than a string)
+	// formats the data into SQL-script (input might be something other than a string)
+	// NOT DONE YET
 	std::string SQLformat(std::string data); 
 	
 public:
