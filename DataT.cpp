@@ -18,9 +18,11 @@ Data_Transmission::Data_Transmission(std::string hostIP, std::string user, std::
 	this->connection = mysql_init(NULL);
 }
 
+
 Data_Transmission::~Data_Transmission() {
 	 this->close();
 }
+
 
 void Data_Transmission::connectToDB() {
 	//TODO: make a connection to the database, set hasConnection to true if successful
@@ -41,6 +43,7 @@ void Data_Transmission::connectToDB() {
 	
 }
 
+
 std::string Data_Transmission::SQLformat(std::string data) {
 	std::string query;
 	//TODO: restructure data into SQL syntax
@@ -51,6 +54,7 @@ std::string Data_Transmission::SQLformat(std::string data) {
 	return query;
 }
 
+
 void Data_Transmission::prepareData(std::string data) {
 	//TODO: retrieve the data (and maybe restructure it), then send it to SQLformat()
 
@@ -59,6 +63,7 @@ void Data_Transmission::prepareData(std::string data) {
 	}
 	
 }
+
 
 int Data_Transmission::sendQuery() {
 	if(this->hasConnection && this->hasSQLscript) { // we have a connection and there is data to send
@@ -74,6 +79,7 @@ int Data_Transmission::sendQuery() {
 	}
 }
 
+
 void Data_Transmission::close() {
 	std::cout << "closing" << std::endl;
 	
@@ -82,6 +88,23 @@ void Data_Transmission::close() {
 	
 	std::cout << "closed" << std::endl;
 }
+
+
+void Data_Transmission::reset() {
+	if(this->res != NULL) mysql_free_result(this->res);
+	mysql_close(this->connection);
+
+	this->hasConnection = false;
+	this->hasSQLscript = false;
+	this->dataToSend = "";
+	this->SQLquery = "";
+	
+	this->res = NULL;
+	
+	this->connection = mysql_init(NULL);
+}
+
+
 
 void Data_Transmission::writeData() {
 	int num_columns = mysql_num_fields(this->res);
