@@ -5,10 +5,8 @@ int main() {
 	Data_Transmission dt("localhost", "ymaknie", "", "test");
 
 	dt.connectToDB();
-	dt.prepareData("test");
+	dt.storeQuery("SELECT * FROM player;");
 	dt.sendQuery();
 
 	dt.writeData();
-	
-
 }

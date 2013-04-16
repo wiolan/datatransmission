@@ -47,7 +47,7 @@ public:
 	// connecting to the database
 	void connectToDB();
 
-	// retrieves data from Data Collection and prepares it
+	// stores a SQL query
 	void storeQuery(std::string query);
 
 	// sends the SQL query to the database (should only be callable if there's a query to send)
