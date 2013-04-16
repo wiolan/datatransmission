@@ -10,7 +10,6 @@ Data_Transmission::Data_Transmission(std::string hostIP, std::string user, std::
 
 	this->hasConnection = false;
 	this->hasSQLscript = false;
-	this->dataToSend = "";
 	this->SQLquery = "";
 
 	this->res = NULL;
@@ -44,24 +43,13 @@ void Data_Transmission::connectToDB() {
 }
 
 
-std::string Data_Transmission::SQLformat(std::string data) {
-	std::string query;
-	//TODO: restructure data into SQL syntax
-
-	query = "SELECT * FROM player;"; //test string, will be changed once we know how data is structured
-	this->hasSQLscript = true;
-	
-	return query;
-}
-
-
-void Data_Transmission::prepareData(std::string data) {
+void Data_Transmission::storeQuery(std::string query) {
 	//TODO: retrieve the data (and maybe restructure it), then send it to SQLformat()
 
-	if(data.size() > 0) {
-		this->SQLquery = this->SQLformat(this->dataToSend);
+	if(query.size() > 0) {
+		this->hasSQLscript = true;
+		this->SQLquery = query;
 	}
-	
 }
 
 
@@ -96,7 +84,6 @@ void Data_Transmission::reset() {
 
 	this->hasConnection = false;
 	this->hasSQLscript = false;
-	this->dataToSend = "";
 	this->SQLquery = "";
 	
 	this->res = NULL;
