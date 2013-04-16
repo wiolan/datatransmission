@@ -14,13 +14,6 @@
 		compilation flags: -L/usr/lib/mysql -lmysqlclient
 	*/
 
-	/*	notes:
-		SQLformat() and prepareData() might change depending on how
-		data storage is handled by the Data Collection module
-
-		right now SQLformat() just contains test logic
-	*/
-
 class Data_Transmission {
 private:
 
