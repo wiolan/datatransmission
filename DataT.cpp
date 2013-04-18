@@ -38,6 +38,7 @@ void Data_Transmission::connectToDB() {
 	}
 	else {
 		this->hasConnection = true;
+		std::cout << "successfully connected to database" << std::endl;
 	}
 	
 }
@@ -69,12 +70,10 @@ int Data_Transmission::sendQuery() {
 
 
 void Data_Transmission::close() {
-	std::cout << "closing" << std::endl;
-	
 	if(this->res != NULL) mysql_free_result(this->res);
 	mysql_close(this->connection);
 	
-	std::cout << "closed" << std::endl;
+	std::cout << "connection closed" << std::endl;
 }
 
 
