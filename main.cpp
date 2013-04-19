@@ -8,7 +8,7 @@ int main() {
 	std::string user = "";
 	std::string pw = "";
 	std::string db = "";
-
+	std::string query = "";
 	int i;
 
 	std::cout << "Make choice for entering connection details" << std::endl;
@@ -43,7 +43,6 @@ int main() {
 		exit(0);
 	}
 		Data_Transmission dt(host, user, pw, db);
-		
 		dt.connectToDB();
 
 		i = 0;
@@ -53,8 +52,6 @@ int main() {
 		std::cout << ">> ";
 		std::cin >> i;
 
-		std::string query = "";
-		
 		if(i == 2) {
 			std::cin >> query;
 		} else {
@@ -64,7 +61,4 @@ int main() {
 		dt.storeQuery(query);
 		dt.sendQuery();
 		dt.writeData();
-		
-	
-	
 }

@@ -16,19 +16,19 @@ Data_Transmission::Data_Transmission(std::string hostIP, std::string user, std::
 
 	this->connection = mysql_init(NULL);
 }
-
-
 Data_Transmission::~Data_Transmission() {
 	 this->close();
 }
 
+
+
 bool Data_Transmission::getConnectionStatus() {
 	return this->hasConnection;
 }
-
 bool Data_Transmission::getQueryStatus() {
 	return this->hasSQLscript;
 }
+
 
 
 void Data_Transmission::connectToDB() {
@@ -97,7 +97,6 @@ void Data_Transmission::reset() {
 	this->res = NULL;
 	this->connection = mysql_init(NULL);
 }
-
 
 
 void Data_Transmission::writeData() {
