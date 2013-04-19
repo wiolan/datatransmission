@@ -37,7 +37,6 @@ public:
 
 	bool getConnectionStatus();
 	bool getQueryStatus();
-
 	
 	
 	// connecting to the database
@@ -46,18 +45,19 @@ public:
 	void storeQuery(std::string query);
 
 	
-	/*	sends the SQL query to the database (should only be callable if there's a query to send)
-		returns value depending on outcome, 1 for successful, 0 for no update, -1 for failiure */
-	int sendQuery(); 
-
+/*	sends the SQL query to the database (should only be callable if there's a query to send)
+	returns value depending on outcome:
+	1 = query was successfully sent
+	0 = nothing happened
+	-1 = no query was sent
+	-2 = no connection	*/
+	int sendQuery();
 	
-	// resets the connection and all flags (keeps the connection details)
+	
+	// resets all query data, results and all flags (keeps the connection details and the connection)
 	void reset();
 	// closes the connection, used in destructor
 	void close();
-
-
-
 
 	
 	//test method, will probably be removed later

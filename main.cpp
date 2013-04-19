@@ -11,18 +11,13 @@ int main() {
 
 	int i;
 
+	std::cout << "Make choice for entering connection details" << std::endl;
 	std::cout << "1. use default" << std::endl;
 	std::cout << "2. enter your own connection details" << std::endl;
 	std::cout << ">> ";
 	std::cin >> i;
 
-	if(i == 1) {
-		host = "pingu.ha.ax";
-		user = "pop2013";
-		pw = "m1cr0Trans8";
-		db = "pop2013";
-	}
-	else {
+	if(i == 2) {
 		std::cout << "Enter host IP" << std::endl;
 		std::cout << ">> ";
 		std::cin >> host;
@@ -36,6 +31,12 @@ int main() {
 		std::cout << ">> ";
 		std::cin >> db;
 	}
+	else {
+		host = "pingu.ha.ax";
+		user = "pop2013";
+		pw = "m1cr0Trans8";
+		db = "pop2013";
+	}
 
 	if(host.size() == 0 || user.size() == 0 || pw.size() == 0 || db.size() == 0) {
 		std::cout << "no connection details entered" << std::endl;
@@ -44,9 +45,23 @@ int main() {
 		Data_Transmission dt(host, user, pw, db);
 		
 		dt.connectToDB();
+
+		i = 0;
+		std::cout << "Make choice for entering query" << std::endl;
+		std::cout << "1. use default (SELECT * FROM gps_information;)" << std::endl;
+		std::cout << "2. enter your own query" << std::endl;
+		std::cout << ">> ";
+		std::cin >> i;
+
+		std::string query = "";
 		
-		dt.storeQuery("SELECT * FROM gps_information;");
-// 		dt.storeQuery("INSERT INTO gps_information (x_coord, y_coord) values ('60.0999', 19.9495)");
+		if(i == 2) {
+			std::cin >> query;
+		} else {
+			query = "SELECT * FROM gps_information;";
+		}
+		
+		dt.storeQuery(query);
 		dt.sendQuery();
 		dt.writeData();
 		

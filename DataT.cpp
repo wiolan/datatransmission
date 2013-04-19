@@ -73,11 +73,11 @@ int Data_Transmission::sendQuery() {
 			std::cout << "ERROR: " << mysql_error(this->connection) << std::endl;
 		} else {
 			outcome = 1;
-			res = mysql_store_result(this->connection);
+			//res = mysql_store_result(this->connection);
+			res = mysql_use_result(this->connection);
 		}
-
 	} else {
-		std::cout << "ERROR: no connection or no SQL-script" << std::endl;
+		outcome = -2;
 	}
 
 	return outcome;
@@ -87,21 +87,14 @@ int Data_Transmission::sendQuery() {
 void Data_Transmission::close() {
 	if(this->res != NULL) mysql_free_result(this->res);
 	mysql_close(this->connection);
-	
-	std::cout << "connection closed" << std::endl;
+	this->hasConnection = false;
 }
 
 
 void Data_Transmission::reset() {
-	if(this->res != NULL) mysql_free_result(this->res);
-	mysql_close(this->connection);
-
-	this->hasConnection = false;
-	this->hasSQLscript = false;
+	this->hasSQLscript = false; 
 	this->SQLquery = "";
-	
 	this->res = NULL;
-	
 	this->connection = mysql_init(NULL);
 }
 
@@ -111,39 +104,17 @@ void Data_Transmission::writeData() {
 
 	MYSQL_ROW row;
 	int num_columns = mysql_num_fields(this->res);
-	int num_rows = mysql_num_rows(this->res);
 
-	std::cout << "col: " << num_columns << " row: " << num_rows << std::endl;
-
-	/*
-	for(int i=0;i<num_rows;i++)
-	{
-		row = mysql_fetch_row(this->res);
-		
-		for(int j=0;j<num_columns;j++)
-		{
-			std::cout << row[j] << std::endl;
-			std::cout << "test " << num_columns << " - " << j << std::endl;
-		}
-
-		std::cout << std::endl;
-		std::cout << std::endl;
-	}*/
-
-
+	std::cout << std::endl;
 	while((row = mysql_fetch_row(this->res)) != NULL) {
-		
-		for(int j=0;j<num_columns;j++)
-		{
-			std::cout << row[j] << std::endl;
+
+		std::cout << "| ";
+		for(int j = 0; j < num_columns; j++) {
+			std::cout << " | ";
+			if(row[j] == NULL) std::cout << "NULL";
+			else std::cout << row[j];
 		}
-		
+		std::cout << " |  |" << std::endl;;
 	}
-
-
-
-
-
-
-	
+	std::cout << std::endl;
 }
