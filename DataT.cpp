@@ -22,6 +22,14 @@ Data_Transmission::~Data_Transmission() {
 	 this->close();
 }
 
+bool Data_Transmission::getConnectionStatus() {
+	return this->hasConnection;
+}
+
+bool Data_Transmission::getQueryStatus() {
+	return this->hasSQLscript;
+}
+
 
 void Data_Transmission::connectToDB() {
 	//TODO: make a connection to the database, set hasConnection to true if successful
@@ -48,6 +56,7 @@ void Data_Transmission::storeQuery(std::string query) {
 	//TODO: retrieve the data (and maybe restructure it), then send it to SQLformat()
 
 	if(query.size() > 0) {
+		this->SQLquery = "";
 		this->hasSQLscript = true;
 		this->SQLquery = query;
 	}
@@ -55,17 +64,23 @@ void Data_Transmission::storeQuery(std::string query) {
 
 
 int Data_Transmission::sendQuery() {
-	if(this->hasConnection && this->hasSQLscript) { // we have a connection and there is data to send
+	int outcome = 0;
+	
+	if(this->getConnectionStatus() && this->getQueryStatus()) { // we have a connection and there is data to send
 
 		if(mysql_query(this->connection, this->SQLquery.c_str())) {
+			outcome = -1;
 			std::cout << "ERROR: " << mysql_error(this->connection) << std::endl;
 		} else {
+			outcome = 1;
 			res = mysql_store_result(this->connection);
 		}
 
 	} else {
 		std::cout << "ERROR: no connection or no SQL-script" << std::endl;
 	}
+
+	return outcome;
 }
 
 
@@ -93,16 +108,42 @@ void Data_Transmission::reset() {
 
 
 void Data_Transmission::writeData() {
+
+	MYSQL_ROW row;
 	int num_columns = mysql_num_fields(this->res);
 	int num_rows = mysql_num_rows(this->res);
+
+	std::cout << "col: " << num_columns << " row: " << num_rows << std::endl;
+
+	/*
 	for(int i=0;i<num_rows;i++)
 	{
-		this->row = mysql_fetch_row(this->res);
+		row = mysql_fetch_row(this->res);
+		
 		for(int j=0;j<num_columns;j++)
 		{
-			std::cout << this->row[j] << std::endl;
+			std::cout << row[j] << std::endl;
+			std::cout << "test " << num_columns << " - " << j << std::endl;
 		}
+
 		std::cout << std::endl;
 		std::cout << std::endl;
+	}*/
+
+
+	while((row = mysql_fetch_row(this->res)) != NULL) {
+		
+		for(int j=0;j<num_columns;j++)
+		{
+			std::cout << row[j] << std::endl;
+		}
+		
 	}
+
+
+
+
+
+
+	
 }

@@ -19,7 +19,6 @@ private:
 
 	MYSQL *connection;
 	MYSQL_RES *res;
-	MYSQL_ROW row;
 	
 	std::string hostIP;
 	std::string user;
@@ -33,25 +32,34 @@ private:
 public:
 	// constructor
 	Data_Transmission(std::string hostIP, std::string user, std::string password, std::string database);
-
 	// destructor
 	~Data_Transmission();
 
+	bool getConnectionStatus();
+	bool getQueryStatus();
+
+	
+	
 	// connecting to the database
 	void connectToDB();
-
 	// stores a SQL query
 	void storeQuery(std::string query);
 
-	// sends the SQL query to the database (should only be callable if there's a query to send)
+	
+	/*	sends the SQL query to the database (should only be callable if there's a query to send)
+		returns value depending on outcome, 1 for successful, 0 for no update, -1 for failiure */
 	int sendQuery(); 
 
+	
 	// resets the connection and all flags (keeps the connection details)
 	void reset();
-
 	// closes the connection, used in destructor
 	void close();
 
+
+
+
+	
 	//test method, will probably be removed later
 	void writeData(); 
 };
